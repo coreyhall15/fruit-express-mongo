@@ -14,11 +14,18 @@ const router = express.Router() // router will have all routes attached to it
 ///////////////////////////////////////////////
 
 
-router.get('/seed', (req, res) => {
+// Authorization Middleware
+router.use((req, res, next) => {
+    if (req.session.loggedIn) {
+      next();
+    } else {
+      res.redirect("/user/login");
+    }
+  });
 
     
 
-})
+
 
 router.get('/', (req, res) => {
 
