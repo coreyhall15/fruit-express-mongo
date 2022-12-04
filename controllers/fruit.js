@@ -30,10 +30,10 @@ router.use((req, res, next) => {
 router.get('/', (req, res) => {
 
     // Get all fruits from mongo and send them back
-    Fruit.find({})
+    Fruit.find({ username: req.session.username})
     .then((fruits) => {
         // res.json(fruits)
-        res.render('fruits/index.ejs', { fruits })
+        res.render('fruits/index.ejs', { fruits, user: req.session.username })
     })
     .catch(err => console.log(err))
 
@@ -46,6 +46,8 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
     
     req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
+
+    req.body.username = req.session.username;
 
     Fruit.create(req.body, (err, createdFruit) =>{
         console.log('created' , createdFruit, err)
